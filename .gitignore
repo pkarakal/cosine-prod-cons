@@ -96,7 +96,7 @@ __pycache__/
 # Executables
 converter
 main
-non_local_means_filter
+cosine_prod_cons
 preprocessor
 
 # configured files
