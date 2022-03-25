@@ -15,6 +15,10 @@ int main(int argc, char **argv) {
             std::cerr <<  "Main: Queue init failed." << std::endl;
             exit (1);
         }
+        rc::Document doc;
+        csc::createFile(doc);
+        queue->document = &doc;
+        std::cout << "got here" <<std::endl;
         for(auto item: producers){
             if(pthread_create(&item, nullptr, csc::producer, queue)){
                 std::cerr << "Failed to create new thread in producer" << std::endl;
@@ -30,6 +34,7 @@ int main(int argc, char **argv) {
             }
             pthread_join(item, nullptr);
         }
+        csc::closeFile(file_path.c_str(), doc);
         csc::queueDelete(queue);
     }
     return 0;

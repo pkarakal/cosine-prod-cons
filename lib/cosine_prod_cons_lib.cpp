@@ -121,6 +121,7 @@ void csc::queueDel(csc::queue *q, csc::workFunction **out) {
     q->buf.pop_front();
     auto pop_time = std::chrono::high_resolution_clock::now();
     auto duration = (pop_time - (*out)->add_time).count() * 10e-9;
+    csc::writeResultToFile(*(q->document), duration);
 
     std::cout << duration <<std::endl;
 
@@ -137,3 +138,18 @@ void *csc::calc_cosine(long long angle){
     return nullptr;
 }
 
+void csc::createFile(rc::Document& document){
+    document = rc::Document("", rc::LabelParams(-1, -1));
+    std::vector<std::string> headers {"index, time in queue"};
+    document.SetRow(0, headers);
+}
+
+
+void csc::writeResultToFile(rc::Document& file, double duration){
+    std::vector<std::string> tmp{ std::to_string(file.GetRowCount()+1), std::to_string(duration)};
+    file.SetRow(file.GetRowCount(), tmp);
+}
+
+void csc::closeFile(const char* file_name, rc::Document& file){
+    file.Save(std::string(file_name));
+}

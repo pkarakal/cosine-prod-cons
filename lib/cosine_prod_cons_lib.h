@@ -16,8 +16,11 @@
 #include <unistd.h>
 #include <vector>
 #include "definitions.h"
+#include "rapidcsv.hpp"
 
 #define MAX_ITERATIONS 10'000'000'000
+
+namespace rc = rapidcsv;
 
 namespace csc {
     void parse_cli_args(int nargs, char **args, std::string &file_path, std::map<std::string, int> &threads,
@@ -41,6 +44,7 @@ namespace csc {
         pthread_mutex_t *mut;
         pthread_cond_t *notFull, *notEmpty;
         long long producers, consumers;
+        rc::Document *document;
     } queue;
 
     queue *queueInit(long long producers, long long consumers, long long iterations);
@@ -52,6 +56,12 @@ namespace csc {
     void queueDel(queue *q, workFunction **out);
 
     void *calc_cosine(long long angle);
+
+    void createFile(rc::Document& document);
+
+    void writeResultToFile(rc::Document& file, double time);
+
+    void closeFile(const char* file_name, rc::Document& file);
 
 }
 
