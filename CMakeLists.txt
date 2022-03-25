@@ -26,6 +26,9 @@ endif()
 configure_file(lib/definitions.h.in lib/definitions.h)
 
 add_library(cosine_prod_cons_lib OBJECT lib/cosine_prod_cons_lib.h lib/cosine_prod_cons_lib.cpp)
+add_library(rapidcsv OBJECT lib/rapidcsv.hpp)
+set_target_properties(rapidcsv PROPERTIES LINKER_LANGUAGE C++)
+target_link_libraries(rapidcsv)
 
 add_executable(cosine_prod_cons cosine-prod-cons.cpp)
 target_link_libraries(cosine_prod_cons cosine_prod_cons_lib)
